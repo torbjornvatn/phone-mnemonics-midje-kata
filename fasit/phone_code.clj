@@ -9,13 +9,12 @@
 ;; By Stuart Sierra,
 ;; @stuartsierra on Twitter
 
-
-
-(ns phone-code
-  (:require [clojure.set :as set]))
+(ns phone-mnemonics.fasit.phone-code
+  (:require [clojure.set :as set])
+  (:require [clojure.string :as str]))
 
 (def words
-  (string/split-lines (slurp "/usr/share/dict/words")))
+  (str/split-lines (slurp "/usr/share/dict/words")))
 
 (def mnemonics {\2 "ABC"
                 \3 "DEF"
@@ -33,7 +32,7 @@
   (map char-code (.toUpperCase word)))
 
 (def words-for-num
-  (group-by word-code (filter #(<= (count %) 7) words)))
+  (group-by word-code (filter #(<= (count %) 8) words)))
 
 (defn encode
   "Given phone number digits as a string, return a set of possible
@@ -55,3 +54,4 @@
   (encode "6327537")
   ;;=> #{... "measles" ... }
   )
+(encode "6327537")
