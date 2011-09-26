@@ -3,7 +3,10 @@
   (:use [midje.sweet])
   (:require [clojure.string :as str]))
 
-(unfinished words char-code)
+(unfinished)
+
+(def words
+  (str/split-lines (slurp "/usr/share/dict/words")))
 
 (def mnemonics {\2 "ABC"
                 \3 "DEF"
@@ -14,18 +17,13 @@
                 \8 "TUV"
                 \9 "WXYZ"})
 
-(defn encode[number]
-  #{(first (words))})
+(def char-code
+  (into {} (for [[digit string] mnemonics letter string] [letter digit])))
 
 (defn number-for-word [word]
   (map char-code (.toUpperCase word)))
 
 (defn words-for-num[] (group-by number-for-word (filter #(<= (count %) 8) (words))))
-
-(fact "A number should be encoded to one or more matching words"
-  (encode ...number...) => #{...word...}
-  (provided
-    (words) => #{...word... ...another-word...}))
 
 (fact "A map of mnemonics must be available"
   mnemonics => (contains {\2 "ABC"}))
@@ -44,3 +42,10 @@
     (provided
       (char-code \O) => \6
       (char-code \I) => \4))
+
+(fact "Numbers should be mapped by letter"
+  (char-code \O) => \6
+  (char-code \I) => \4)
+
+(fact "Words should be found in the dicionary"
+  (take 1 words) => ["A"])
