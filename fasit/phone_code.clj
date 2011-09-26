@@ -27,9 +27,7 @@
                 \9 "WXYZ"})
 
 (def char-code
-  (into {} (for [[digit string] mnemonics
-                 letter string]
-             [letter digit])))
+  (into {} (for [[digit string] mnemonics letter string] [letter digit])))
 
 (defn word-code [word]
   (map char-code (.toUpperCase word)))
